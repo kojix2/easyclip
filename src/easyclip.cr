@@ -27,7 +27,7 @@ module EasyClip
     {% elsif flag?(:unix) %}
       "xsel -ib"
     {% elsif flag?(:win32) %}
-      "clip"
+      "powershell.exe -command Set-Clipboard -Value"
     {% end %}
   end
 
