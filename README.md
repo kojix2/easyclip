@@ -1,5 +1,7 @@
 # EasyClip
 
+[![test](https://github.com/kojix2/easyclip/actions/workflows/test.yml/badge.svg)](https://github.com/kojix2/easyclip/actions/workflows/test.yml)
+
 Crystal module for clipboard interaction.
 
 ## Installation
