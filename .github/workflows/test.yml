@@ -16,6 +16,16 @@ jobs:
       - uses: crystal-lang/install-crystal@v1
         with:
           crystal: latest
-      - name: Run tests
+      - name: ubuntu
+        if: ${{ matrix.os == 'ubuntu' }}
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: |
+            sudo apt-get install -y xsel
+            crystal spec
+      - name: mac
+        if: ${{ matrix.os == 'macos' }}
         run: crystal spec
-
+      - name: windows
+        if: ${{ matrix.os == 'windows' }}
+        run: crystal spec
