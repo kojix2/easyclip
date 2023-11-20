@@ -43,9 +43,9 @@ module EasyClip
 
   private def run_command(cmd, content = nil)
     if content
-      ps = Process.new(cmd, shell: true, input: Process::Redirect::Pipe)
+      ps = Process.new(cmd, shell: true, input: Process::Redirect::Pipe, error: Process::Redirect::Pipe)
     else
-      ps = Process.new(cmd, shell: true, output: Process::Redirect::Pipe)
+      ps = Process.new(cmd, shell: true, output: Process::Redirect::Pipe, error: Process::Redirect::Pipe)
     end
     if content
       stdin = ps.input
@@ -55,8 +55,9 @@ module EasyClip
       stdout = ps.output
       content = stdout.gets_to_end
     end
+    error_msg = ps.error.not_nil!.gets_to_end
     status = ps.wait
-    raise Exception.new("[EasyClip] Operation failed") unless status.success?
+    raise Exception.new("[EasyClip] Operation failed: #{error_msg}") unless status.success?
     content
   end
 end
