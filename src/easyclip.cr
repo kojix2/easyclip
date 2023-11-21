@@ -4,17 +4,12 @@ module EasyClip
   extend self
 
   # Copies the given content to the clipboard.
-  #
-  # @param content [String] The text to be copied.
-  def copy(content)
-    content = content.to_s
+  def copy(content : String)
     cmd = copy_command
     run_command(cmd, content)
   end
 
   # Retrieves the content from the clipboard.
-  #
-  # @return [String] The text retrieved from the clipboard.
   def paste : String
     cmd = paste_command
     result = run_command(cmd)
