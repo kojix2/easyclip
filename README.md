@@ -22,8 +22,11 @@ Run `shards install`
 ```crystal
 require "easyclip"
 
-EasyClip.copy('text')  # Copy 'text' to clipboard
-puts EasyClip.paste    # Output text from the clipboard
+# Copy 'text' to clipboard
+EasyClip.copy("text")
+
+# Paste text from the clipboard
+str = EasyClip.paste
 ```
 
 ## Contributing
