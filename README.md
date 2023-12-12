@@ -10,7 +10,7 @@ Add to `shard.yml`:
 
 ```yaml
 dependencies:
-  easy_clip:
+  easyclip:
     github: kojix2/easyclip
 ```
 
