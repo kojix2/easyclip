@@ -16,7 +16,8 @@ module EasyClip
   end
 
   # Copies the given content to the clipboard.
-  def copy(content : String)
+  # Note for Windows: Trailing newline characters will be appended to the content when copied to the clipboard.
+  def copy(content : String) : Nil
     cmd = copy_command
     run_copy_command(cmd, content)
   end
