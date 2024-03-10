@@ -18,14 +18,13 @@ module EasyClip
   # Copies the given content to the clipboard.
   def copy(content : String)
     cmd = copy_command
-    run_command(cmd, content)
+    run_copy_command(cmd, content)
   end
 
   # Retrieves the content from the clipboard.
   def paste : String
     cmd = paste_command
-    result = run_command(cmd)
-    return result
+    run_paste_command(cmd)
   end
 
   private def copy_command
@@ -48,26 +47,34 @@ module EasyClip
     {% end %}
   end
 
-  private def run_command(cmd, content = nil)
-    if content
-      ps = Process.new(cmd, shell: true, input: Process::Redirect::Pipe, error: Process::Redirect::Pipe)
-    else
-      ps = Process.new(cmd, shell: true, output: Process::Redirect::Pipe, error: Process::Redirect::Pipe)
-    end
-    if content
-      stdin = ps.input
-      stdin.print(content)
-      stdin.close
-    else
-      stdout = ps.output
-      content = stdout.gets_to_end
-    end
+  private def run_copy_command(cmd, content : String)
+    ps = Process.new(cmd, shell: true, input: Process::Redirect::Pipe, error: Process::Redirect::Pipe)
+    stdin = ps.input
+    stdin.print(content)
+    stdin.close
+    handle_process_error(ps, "Copy")
+  end
+
+  private def run_paste_command(cmd)
+    ps = Process.new(cmd, shell: true, output: Process::Redirect::Pipe, error: Process::Redirect::Pipe)
+    stdout = ps.output
+    content = ps.output.gets_to_end
+    handle_process_error(ps, "Paste")
+    content
+  end
+
+  private def handle_process_error(ps : Process, operation : String)
     error_msg = ps.error.not_nil!.gets_to_end
     status = ps.wait
     unless status.success?
-      error = content ? CopyError.new("[EasyClip] Copy operation failed: #{error_msg}") : PasteError.new("[EasyClip] Paste operation failed: #{error_msg}")
-      raise error
+      case operation
+      when "Copy"
+        raise CopyError.new("[EasyClip] #{operation} operation failed: #{error_msg}")
+      when "Paste"
+        raise PasteError.new("[EasyClip] #{operation} operation failed: #{error_msg}")
+      else
+        raise Error.new("[EasyClip] Unknown operation: #{operation}")
+      end
     end
-    content
   end
 end
