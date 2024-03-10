@@ -3,6 +3,18 @@ module EasyClip
 
   extend self
 
+  # Base class for EasyClip errors
+  class Error < Exception
+  end
+
+  # Raised when an error occurs during the copy operation
+  class CopyError < Error
+  end
+
+  # Raised when an error occurs during the paste operation
+  class PasteError < Error
+  end
+
   # Copies the given content to the clipboard.
   def copy(content : String)
     cmd = copy_command
@@ -52,7 +64,10 @@ module EasyClip
     end
     error_msg = ps.error.not_nil!.gets_to_end
     status = ps.wait
-    raise Exception.new("[EasyClip] Operation failed: #{error_msg}") unless status.success?
+    unless status.success?
+      error = content ? CopyError.new("[EasyClip] Copy operation failed: #{error_msg}") : PasteError.new("[EasyClip] Paste operation failed: #{error_msg}")
+      raise error
+    end
     content
   end
 end
