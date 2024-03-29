@@ -33,7 +33,7 @@ module EasyClip
       "pbcopy"
     {% elsif flag?(:unix) %}
       "xsel -ib"
-    {% elsif flag?(:win32) %}
+    {% elsif flag?(:windows) %}
       "clip"
     {% end %}
   end
@@ -43,7 +43,7 @@ module EasyClip
       "pbpaste"
     {% elsif flag?(:unix) %}
       "xsel -ob"
-    {% elsif flag?(:win32) %}
+    {% elsif flag?(:windows) %}
       "powershell.exe -command Get-Clipboard"
     {% end %}
   end

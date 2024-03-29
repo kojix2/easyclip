@@ -24,7 +24,7 @@ describe EasyClip do
     greetings.each do |greeting, language|
       EasyClip.copy(greeting)
       pasted_text = EasyClip.paste
-      {% if flag?(:win32) %}
+      {% if flag?(:windows) %}
         pasted_text = pasted_text.chomp
       {% end %}
       pasted_text.should eq(greeting)
