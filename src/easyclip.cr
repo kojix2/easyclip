@@ -34,8 +34,6 @@ module EasyClip
     {% elsif flag?(:unix) %}
       {% if flag?(:wayland) %}
         "wl-copy"
-      {% elsif flag?(:xclip) %}
-        "xclip -selection clipboard -i"
       {% elsif flag?(:xsel) %}
         "xsel -ib"
       {% else %}
@@ -52,8 +50,6 @@ module EasyClip
     {% elsif flag?(:unix) %}
       {% if flag?(:wayland) %}
         "wl-paste"
-      {% elsif flag?(:xclip) %}
-        "xclip -selection clipboard -o"
       {% elsif flag?(:xsel) %}
         "xsel -ob"
       {% else %}

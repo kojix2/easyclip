@@ -31,13 +31,7 @@ str = EasyClip.paste
 
 ### Linux
 
-Default: `xsel` (X11). Optional flags:
-
-```bash
-crystal spec -D xclip
-```
-
-Wayland selection:
+Default: `xsel` (X11). Wayland selection:
 
 ```bash
 crystal spec -D wayland
