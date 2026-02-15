@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.17.1">
+<meta name="generator" content="Crystal Docs 1.18.2">
 <meta name="crystal_docs.project_version" content="main">
 <meta name="crystal_docs.project_name" content="easyclip">
 
@@ -118,6 +118,15 @@
 
 <span class="c"># Paste text from the clipboard</span>
 str <span class="o">=</span> <span class="t">EasyClip</span>.paste</code></pre>
+<h3><a id="linux" class="anchor" href="#linux">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Linux</h3>
+<p>Default: <code>xsel</code> (X11). Optional flags:</p>
+<pre><code class="language-bash">crystal spec -D xclip</code></pre>
+<p>Wayland selection:</p>
+<pre><code class="language-bash">crystal spec -D wayland</code></pre>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
