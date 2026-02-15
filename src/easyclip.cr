@@ -32,7 +32,15 @@ module EasyClip
     {% if flag?(:darwin) %}
       "pbcopy"
     {% elsif flag?(:unix) %}
-      "xsel -ib"
+      {% if flag?(:wayland) %}
+        "wl-copy"
+      {% elsif flag?(:xclip) %}
+        "xclip -selection clipboard -i"
+      {% elsif flag?(:xsel) %}
+        "xsel -ib"
+      {% else %}
+        "xsel -ib"
+      {% end %}
     {% elsif flag?(:win32) %}
       "clip"
     {% end %}
@@ -42,7 +50,15 @@ module EasyClip
     {% if flag?(:darwin) %}
       "pbpaste"
     {% elsif flag?(:unix) %}
-      "xsel -ob"
+      {% if flag?(:wayland) %}
+        "wl-paste"
+      {% elsif flag?(:xclip) %}
+        "xclip -selection clipboard -o"
+      {% elsif flag?(:xsel) %}
+        "xsel -ob"
+      {% else %}
+        "xsel -ob"
+      {% end %}
     {% elsif flag?(:win32) %}
       "powershell.exe -command Get-Clipboard"
     {% end %}

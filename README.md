@@ -19,7 +19,6 @@ Run `shards install`
 
 ## Usage
 
-
 ```crystal
 require "easyclip"
 
@@ -28,6 +27,20 @@ EasyClip.copy("text")
 
 # Paste text from the clipboard
 str = EasyClip.paste
+```
+
+### Linux
+
+Default: `xsel` (X11). Optional flags:
+
+```bash
+crystal spec -D xclip
+```
+
+Wayland selection:
+
+```bash
+crystal spec -D wayland
 ```
 
 ## Contributing
@@ -40,4 +53,4 @@ str = EasyClip.paste
 
 ## License
 
-MIT 
+MIT
