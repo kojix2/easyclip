@@ -18,59 +18,58 @@ module EasyClip
   # Copies the given content to the clipboard.
   # Note for Windows: Trailing newline characters will be appended to the content when copied to the clipboard.
   def copy(content : String) : Nil
-    cmd = copy_command
-    run_copy_command(cmd, content)
+    cmd, args = copy_command
+    run_copy_command(cmd, args, content)
   end
 
   # Retrieves the content from the clipboard.
   def paste : String
-    cmd = paste_command
-    run_paste_command(cmd)
+    cmd, args = paste_command
+    run_paste_command(cmd, args)
   end
 
   private def copy_command
     {% if flag?(:darwin) %}
-      "pbcopy"
+      {"pbcopy", [] of String}
     {% elsif flag?(:unix) %}
       {% if flag?(:wayland) %}
-        "wl-copy"
+        {"wl-copy", [] of String}
       {% elsif flag?(:xsel) %}
-        "xsel -ib"
+        {"xsel", ["-ib"]}
       {% else %}
-        "xsel -ib"
+        {"xsel", ["-ib"]}
       {% end %}
     {% elsif flag?(:win32) %}
-      "clip"
+      {"clip", [] of String}
     {% end %}
   end
 
   private def paste_command
     {% if flag?(:darwin) %}
-      "pbpaste"
+      {"pbpaste", [] of String}
     {% elsif flag?(:unix) %}
       {% if flag?(:wayland) %}
-        "wl-paste"
+        {"wl-paste", [] of String}
       {% elsif flag?(:xsel) %}
-        "xsel -ob"
+        {"xsel", ["-ob"]}
       {% else %}
-        "xsel -ob"
+        {"xsel", ["-ob"]}
       {% end %}
     {% elsif flag?(:win32) %}
-      "powershell.exe -command Get-Clipboard"
+      {"powershell.exe", ["-command", "Get-Clipboard"]}
     {% end %}
   end
 
-  private def run_copy_command(cmd, content : String)
-    ps = Process.new(cmd, shell: true, input: Process::Redirect::Pipe, error: Process::Redirect::Pipe)
+  private def run_copy_command(cmd : String, args : Array(String), content : String)
+    ps = Process.new(cmd, args, shell: false, input: Process::Redirect::Pipe, error: Process::Redirect::Pipe)
     stdin = ps.input
     stdin.print(content)
     stdin.close
     handle_process_error(ps, "Copy")
   end
 
-  private def run_paste_command(cmd)
-    ps = Process.new(cmd, shell: true, output: Process::Redirect::Pipe, error: Process::Redirect::Pipe)
-    stdout = ps.output
+  private def run_paste_command(cmd : String, args : Array(String))
+    ps = Process.new(cmd, args, shell: false, output: Process::Redirect::Pipe, error: Process::Redirect::Pipe)
     content = ps.output.gets_to_end
     handle_process_error(ps, "Paste")
     content
