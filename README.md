@@ -31,10 +31,11 @@ str = EasyClip.paste
 
 ### Linux
 
-Detects an available tool at runtime, in order:
+Detects the current session and available tools at runtime:
 
-- Wayland: `wl-copy` / `wl-paste`
-- X11: `xclip`, then `xsel`
+- Wayland: `wl-copy` / `wl-paste`, then X11/XWayland fallbacks
+- X11 copy: `xsel`
+- X11 paste: `xclip`, then `xsel`
 - WSL: `clip.exe` (copy), `powershell.exe` (paste)
 - Termux: `termux-clipboard-set` / `termux-clipboard-get`
 
