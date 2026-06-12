@@ -22,6 +22,7 @@ describe EasyClip do
       "Hello\n"  => "Trailing newline",
       "😀🎉🚀"      => "Emoji (surrogate pairs)",
       ""         => "Empty string",
+      "A\0B"     => "Embedded null",
     }
 
     greetings.each do |greeting, _|

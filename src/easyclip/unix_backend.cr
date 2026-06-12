@@ -3,26 +3,14 @@ module EasyClip
 
   class UnixBackend < ProcessBackend
     def copy_commands : Array(Command)
-      {% if flag?(:darwin) %}
-        available_commands({command: "pbcopy", args: [] of String})
-      {% elsif flag?(:unix) %}
-        available_commands(linux_copy_candidates)
-      {% else %}
-        [] of Command
-      {% end %}
+      available_commands(unix_copy_candidates)
     end
 
     def paste_commands : Array(Command)
-      {% if flag?(:darwin) %}
-        available_commands({command: "pbpaste", args: [] of String})
-      {% elsif flag?(:unix) %}
-        available_commands(linux_paste_candidates)
-      {% else %}
-        [] of Command
-      {% end %}
+      available_commands(unix_paste_candidates)
     end
 
-    private def linux_copy_candidates : Array(Command)
+    private def unix_copy_candidates : Array(Command)
       wayland = {command: "wl-copy", args: [] of String}
       xsel = {command: "xsel", args: ["-ib"]}
       termux = {command: "termux-clipboard-set", args: [] of String}
@@ -37,7 +25,7 @@ module EasyClip
       [xsel]
     end
 
-    private def linux_paste_candidates : Array(Command)
+    private def unix_paste_candidates : Array(Command)
       wayland = {command: "wl-paste", args: [] of String}
       xclip = {command: "xclip", args: ["-selection", "clipboard", "-out"]}
       xsel = {command: "xsel", args: ["-ob"]}

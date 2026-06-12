@@ -2,6 +2,7 @@ require "./easyclip/errors"
 require "./easyclip/command"
 require "./easyclip/backend"
 require "./easyclip/process_backend"
+require "./easyclip/macos_backend"
 require "./easyclip/unix_backend"
 require "./easyclip/windows_backend"
 
@@ -23,6 +24,8 @@ module EasyClip
   private def backend : Backend
     {% if flag?(:win32) %}
       WindowsBackend.new
+    {% elsif flag?(:darwin) %}
+      MacOSBackend.new
     {% else %}
       UnixBackend.new
     {% end %}

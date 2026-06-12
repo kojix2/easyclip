@@ -43,6 +43,11 @@ Install what fits your session, e.g. `sudo apt install wl-clipboard xclip xsel`.
 
 Commands come from a fixed allowlist, run without a shell, and receive text via stdin.
 
+### macOS
+
+Uses the native `NSPasteboard` API directly. It does not spawn `pbcopy` or
+`pbpaste`.
+
 ### Windows
 
 Uses the native Win32 clipboard API (`CF_UNICODETEXT`): no child process, no
