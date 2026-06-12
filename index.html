@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.18.2">
+<meta name="generator" content="Crystal Docs 1.19.1">
 <meta name="crystal_docs.project_version" content="main">
 <meta name="crystal_docs.project_name" content="easyclip">
 
@@ -62,6 +62,16 @@
       
         <ul>
   
+  <li class=" " data-id="easyclip/EasyClip/Backend" data-name="easyclip::backend">
+      <a href="EasyClip/Backend.html">Backend</a>
+      
+    </li>
+  
+  <li class=" " data-id="easyclip/EasyClip/Command" data-name="easyclip::command">
+      <a href="EasyClip/Command.html">Command</a>
+      
+    </li>
+  
   <li class=" " data-id="easyclip/EasyClip/CopyError" data-name="easyclip::copyerror">
       <a href="EasyClip/CopyError.html">CopyError</a>
       
@@ -74,6 +84,16 @@
   
   <li class=" " data-id="easyclip/EasyClip/PasteError" data-name="easyclip::pasteerror">
       <a href="EasyClip/PasteError.html">PasteError</a>
+      
+    </li>
+  
+  <li class=" " data-id="easyclip/EasyClip/ProcessBackend" data-name="easyclip::processbackend">
+      <a href="EasyClip/ProcessBackend.html">ProcessBackend</a>
+      
+    </li>
+  
+  <li class=" " data-id="easyclip/EasyClip/UnixBackend" data-name="easyclip::unixbackend">
+      <a href="EasyClip/UnixBackend.html">UnixBackend</a>
       
     </li>
   
@@ -123,8 +143,23 @@ str <span class="o">=</span> <span class="t">EasyClip</span>.paste</code></pre>
     <use href="#octicon-link"/>
   </svg>
 </a>Linux</h3>
-<p>Default: <code>xsel</code> (X11). Wayland selection:</p>
-<pre><code class="language-bash">crystal spec -D wayland</code></pre>
+<p>Detects an available tool at runtime, in order:</p>
+<ul>
+<li>Wayland: <code>wl-copy</code> / <code>wl-paste</code></li>
+<li>X11: <code>xclip</code>, then <code>xsel</code></li>
+<li>WSL: <code>clip.exe</code> (copy), <code>powershell.exe</code> (paste)</li>
+<li>Termux: <code>termux-clipboard-set</code> / <code>termux-clipboard-get</code></li>
+</ul>
+<p>Install what fits your session, e.g. <code>sudo apt install wl-clipboard xclip xsel</code>.</p>
+<p>Commands come from a fixed allowlist, run without a shell, and receive text via stdin.</p>
+<h3><a id="windows" class="anchor" href="#windows">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Windows</h3>
+<p>Uses the native Win32 clipboard API (<code>CF_UNICODETEXT</code>): no child process, no
+trailing-newline quirk. WSL runs as a Linux binary and uses the Linux fallbacks
+above instead.</p>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
