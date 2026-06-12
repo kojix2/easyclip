@@ -26,6 +26,21 @@ private def with_fake_command(name : String, &)
   end
 end
 
+private def with_fake_commands(*names : String, &)
+  dir = File.tempname("easyclip-spec")
+  Dir.mkdir(dir)
+  begin
+    names.each do |name|
+      path = File.join(dir, name)
+      File.write(path, "#!/bin/sh\nexit 0\n")
+      File.chmod(path, 0o755)
+    end
+    yield dir
+  ensure
+    FileUtils.rm_rf(dir)
+  end
+end
+
 describe EasyClip::UnixBackend do
   {% if flag?(:darwin) %}
     it "selects pbcopy for copy on macOS" do
@@ -44,6 +59,18 @@ describe EasyClip::UnixBackend do
           commands = EasyClip::UnixBackend.new.paste_commands
 
           commands.map(&.[:command]).should eq(["pbpaste"])
+        end
+      end
+    end
+  {% elsif flag?(:linux) %}
+    it "uses xsel for X11 copy" do
+      with_fake_commands("xsel", "xclip") do |dir|
+        with_path(dir) do
+          commands = EasyClip::UnixBackend.new.copy_commands
+
+          commands.should eq([
+            {command: "xsel", args: ["-ib"]},
+          ])
         end
       end
     end

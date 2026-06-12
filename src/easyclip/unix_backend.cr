@@ -24,7 +24,6 @@ module EasyClip
 
     private def linux_copy_candidates : Array(Command)
       wayland = {command: "wl-copy", args: [] of String}
-      xclip = {command: "xclip", args: ["-selection", "clipboard"]}
       xsel = {command: "xsel", args: ["-ib"]}
       termux = {command: "termux-clipboard-set", args: [] of String}
       wsl = {command: "clip.exe", args: [] of String}
@@ -33,9 +32,9 @@ module EasyClip
       return [wsl] if wsl?
       # On a Wayland session, X11 tools may still work via XWayland, so keep them
       # as a fallback when wl-clipboard is not installed.
-      return [wayland, xclip, xsel] if wayland_session?
+      return [wayland, xsel] if wayland_session?
 
-      [xclip, xsel]
+      [xsel]
     end
 
     private def linux_paste_candidates : Array(Command)
