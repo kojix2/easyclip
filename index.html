@@ -143,10 +143,11 @@ str <span class="o">=</span> <span class="t">EasyClip</span>.paste</code></pre>
     <use href="#octicon-link"/>
   </svg>
 </a>Linux</h3>
-<p>Detects an available tool at runtime, in order:</p>
+<p>Detects the current session and available tools at runtime:</p>
 <ul>
-<li>Wayland: <code>wl-copy</code> / <code>wl-paste</code></li>
-<li>X11: <code>xclip</code>, then <code>xsel</code></li>
+<li>Wayland: <code>wl-copy</code> / <code>wl-paste</code>, then X11/XWayland fallbacks</li>
+<li>X11 copy: <code>xsel</code></li>
+<li>X11 paste: <code>xclip</code>, then <code>xsel</code></li>
 <li>WSL: <code>clip.exe</code> (copy), <code>powershell.exe</code> (paste)</li>
 <li>Termux: <code>termux-clipboard-set</code> / <code>termux-clipboard-get</code></li>
 </ul>
