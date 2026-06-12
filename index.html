@@ -153,6 +153,13 @@ str <span class="o">=</span> <span class="t">EasyClip</span>.paste</code></pre>
 </ul>
 <p>Install what fits your session, e.g. <code>sudo apt install wl-clipboard xclip xsel</code>.</p>
 <p>Commands come from a fixed allowlist, run without a shell, and receive text via stdin.</p>
+<h3><a id="mac-os" class="anchor" href="#mac-os">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>macOS</h3>
+<p>Uses the native <code>NSPasteboard</code> API directly. It does not spawn <code>pbcopy</code> or
+<code>pbpaste</code>.</p>
 <h3><a id="windows" class="anchor" href="#windows">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
