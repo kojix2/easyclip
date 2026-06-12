@@ -22,7 +22,6 @@ describe EasyClip do
       "Hello\n"  => "Trailing newline",
       "😀🎉🚀"      => "Emoji (surrogate pairs)",
       ""         => "Empty string",
-      "A\0B"     => "Embedded null",
     }
 
     greetings.each do |greeting, _|
@@ -31,4 +30,15 @@ describe EasyClip do
       pasted_text.should eq(greeting)
     end
   end
+
+  {% if flag?(:darwin) || flag?(:win32) %}
+    it "preserves embedded null characters with native backends" do
+      greeting = "A\0B"
+
+      EasyClip.copy(greeting)
+      pasted_text = EasyClip.paste
+
+      pasted_text.should eq(greeting)
+    end
+  {% end %}
 end
