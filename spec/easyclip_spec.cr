@@ -31,7 +31,9 @@ describe EasyClip do
     end
   end
 
-  {% if flag?(:darwin) || flag?(:win32) %}
+  # Linux clipboard tools and Windows CF_UNICODETEXT treat embedded nulls as a
+  # terminator, so this is only guaranteed by the macOS NSPasteboard backend.
+  {% if flag?(:darwin) %}
     it "preserves embedded null characters with native backends" do
       greeting = "A\0B"
 
