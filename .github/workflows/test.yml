@@ -24,7 +24,8 @@ jobs:
         uses: coactions/setup-xvfb@v1
         with:
           run: |
-            sudo apt-get install -y xsel
+            sudo apt-get update
+            sudo apt-get install -y xclip xsel
             crystal spec
       - name: mac
         if: ${{ matrix.os == 'macos' }}

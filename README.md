@@ -31,11 +31,22 @@ str = EasyClip.paste
 
 ### Linux
 
-Default: `xsel` (X11). Wayland selection:
+Detects an available tool at runtime, in order:
 
-```bash
-crystal spec -D wayland
-```
+- Wayland: `wl-copy` / `wl-paste`
+- X11: `xclip`, then `xsel`
+- WSL: `clip.exe` (copy), `powershell.exe` (paste)
+- Termux: `termux-clipboard-set` / `termux-clipboard-get`
+
+Install what fits your session, e.g. `sudo apt install wl-clipboard xclip xsel`.
+
+Commands come from a fixed allowlist, run without a shell, and receive text via stdin.
+
+### Windows
+
+Uses the native Win32 clipboard API (`CF_UNICODETEXT`): no child process, no
+trailing-newline quirk. WSL runs as a Linux binary and uses the Linux fallbacks
+above instead.
 
 ## Contributing
 

@@ -19,14 +19,14 @@ describe EasyClip do
       "你好"       => "Chinese",
       "안녕하세요"    => "Korean",
       "こんにちは"    => "Japanese",
+      "Hello\n"  => "Trailing newline",
+      "😀🎉🚀"      => "Emoji (surrogate pairs)",
+      ""         => "Empty string",
     }
 
-    greetings.each do |greeting, language|
+    greetings.each do |greeting, _|
       EasyClip.copy(greeting)
       pasted_text = EasyClip.paste
-      {% if flag?(:win32) %}
-        pasted_text = pasted_text.chomp
-      {% end %}
       pasted_text.should eq(greeting)
     end
   end
